@@ -39,12 +39,21 @@ namespace Day4
                 return Numbers[rowNumber];
             }
 
-            public bool AllChecked(int? row = null, int? column = null)
+            private bool AllChecked(int? row = null, int? column = null)
             {
                 if (row == null) return column != null && GetColumn((int)column).All(value => value.Checked);
                 else return column == null && GetRow((int)row).All(value => value.Checked);
             }
 
+            public bool CheckEveryRowAndColumn()
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    if (AllChecked(i, null)) return true;
+                    if (AllChecked(null, i)) return true;
+                }
+                return false;
+            }
             public bool SetValueCheckedIfExists(int value)
             {
                 foreach (var row in Numbers)
@@ -60,7 +69,11 @@ namespace Day4
                 }
                 return false;
             }
-            
+
+            public int GetSumUncheckedValues()
+            {
+                return Numbers.Sum(row => row.Where(value=>value.Checked == false).Sum(value => value.Value));
+            }
         }
     }
 }
